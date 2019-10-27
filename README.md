@@ -1,1 +1,1 @@
-# project-2-starter
+# GWU CSCI 4137 - Project 2
