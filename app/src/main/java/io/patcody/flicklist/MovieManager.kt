@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
+import javax.net.ssl.HostnameVerifier
 
 class MovieManager {
     private val okHttpClient: OkHttpClient
@@ -14,18 +15,21 @@ class MovieManager {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         builder.addInterceptor(logging)
+
+        //Need to ignore the unverified SSL certificate problem
+        builder.hostnameVerifier(HostnameVerifier { hostname, session -> true })
         okHttpClient = builder.build()
     }
 
-    fun searchForMovie(searchTerm: String): List<MovieResult> {
+    fun searchForMovie(searchTerm: String, apiKey: String): List<MovieResult> {
         val movieResultsList: MutableList<MovieResult> = mutableListOf()
-        val searchUrl: String = "movie-database-imdb-alternative.p.rapidapi.com"
+        val searchUrl: String = "https://www.movie-database-imdb-alternative.p.rapidapi.com/"
         val searchParams: String = "?s=$searchTerm"
 
         val request = Request.Builder()
             .url(searchUrl + searchParams)
             .header("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
-            .header("x-rapidapi-key", "125d7fab73msh068a16dbf1aaff1p1513dejsnbc0c8c924b68")
+            .header("x-rapidapi-key", apiKey)
             .build()
 
         val response = okHttpClient.newCall(request).execute()
