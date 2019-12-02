@@ -5,12 +5,15 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.doAsync
 
 class MenuActivity : AppCompatActivity() {
 
     lateinit var toolbar: ActionBar
-    
+    lateinit var firebaseAuth: FirebaseAuth
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
             R.id.navigation_search -> {
@@ -42,10 +45,12 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
+        firebaseAuth = FirebaseAuth.getInstance()
         toolbar = supportActionBar!!
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavView)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        toolbar.title = "MovieResult Search"
+        val email = firebaseAuth.currentUser?.email
+        toolbar.title = "Welcome $email"
         val searchFragment = SearchFragment()
         openFragment(searchFragment)
 
