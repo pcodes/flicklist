@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import org.jetbrains.anko.doAsync
 import java.lang.Exception
 
@@ -22,6 +25,9 @@ class SearchFragment : Fragment() {
     lateinit var searchText: TextView
     lateinit var searchButton: Button
     lateinit var responseTextView: TextView
+    lateinit var addMovie: FloatingActionButton
+    lateinit var firebaseDataBase: FirebaseDatabase
+    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +44,12 @@ class SearchFragment : Fragment() {
         searchText = view.findViewById(R.id.text_search_box)
         searchButton = view.findViewById(R.id.search_button)
         responseTextView = view.findViewById(R.id.movie_response_text)
+        addMovie = view.findViewById(R.id.addMovie)
+        firebaseDataBase = FirebaseDatabase.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+        //Get user id and get reference to user db
+        val userID = firebaseAuth.currentUser?.uid
+        val movies = mutableListOf<MovieResult>()
 
         searchButton.setOnClickListener {
             activity.doAsync {
@@ -50,6 +62,7 @@ class SearchFragment : Fragment() {
 
                         for (movie in movieResults) {
                             responseTextView.text = responseTextView.text.toString() + movie.name + "\n"
+                            movies.add(MovieResult(movie.name, movie.id, movie.posterUrl))
                         }
                     }
                 } catch (e: Exception) {
@@ -61,6 +74,17 @@ class SearchFragment : Fragment() {
 
             }
         }
+
+        addMovie.setOnClickListener {
+            if (movies.isNotEmpty()) {
+                for(movie in movies) {
+                    val movieName = movie.name
+                    val reference = firebaseDataBase.getReference("movies/$userID/$movieName")
+                    reference.setValue(movie)
+                }
+            }
+        }
+
     }
 
     companion object {
