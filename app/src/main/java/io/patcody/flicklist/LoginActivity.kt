@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
 
         if(username.text.toString().trim().isNotEmpty()){
             saveLogin.isChecked = true
+            savePassword.isEnabled = true
         }
 
         username.addTextChangedListener(textWatcher)
@@ -88,6 +89,12 @@ class LoginActivity : AppCompatActivity() {
                                     .putString("SAVED_PASSWORD", password.text.toString())
                                     .apply()
                             }
+                        }else{
+                            preferences
+                                .edit()
+                                .putString("SAVED_USERNAME", "")
+                                .putString("SAVED_PASSWORD", "")
+                                .apply()
                         }
 
 
