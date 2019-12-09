@@ -48,12 +48,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="24dp"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password0" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordAttributes" />
 
     <Button
         android:id="@+id/sign_up"
@@ -87,5 +87,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/password0"
         app:layout_constraintTop_toTopOf="@+id/password0" />
+
+    <TextView
+        android:id="@+id/passwordAttributes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/passwordAttributes"
+        app:layout_constraintStart_toStartOf="@+id/password0"
+        app:layout_constraintTop_toBottomOf="@+id/password0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
