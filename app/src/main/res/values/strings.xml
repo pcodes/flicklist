@@ -11,7 +11,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
+    <string name="username_hint">Email</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="save_username">Save Email</string>
+    <string name="save_password">Save Password</string>
+    <string name="passwordAttributes">At least 6 characters, including numbers</string>
 
 </resources>

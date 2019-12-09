@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var login: Button
     private lateinit var signUp: Button
+    private lateinit var saveLogin: CheckBox
+    private lateinit var savePassword: CheckBox
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +30,33 @@ class LoginActivity : AppCompatActivity() {
 
         username = findViewById(R.id.username)
         password = findViewById(R.id.password0)
+        saveLogin = findViewById(R.id.saveUsername)
+        savePassword = findViewById(R.id.savePassword)
         login = findViewById(R.id.loginBtn)
         signUp = findViewById(R.id.sign_up)
         firebaseAuth = FirebaseAuth.getInstance()
 
         login.isEnabled = false
+        savePassword.isEnabled = false
 
         val preferences: SharedPreferences = getSharedPreferences("flickList", Context.MODE_PRIVATE)
         username.setText(preferences.getString("SAVED_USERNAME", ""))
+        password.setText(preferences.getString("SAVED_PASSWORD", ""))
+
+        if(username.text.toString().trim().isNotEmpty() && username.text.toString().trim().isNotEmpty()){
+            login.isEnabled = true
+        }
 
         username.addTextChangedListener(textWatcher)
         password.addTextChangedListener(textWatcher)
+        saveLogin.setOnClickListener {
+            if(saveLogin.isChecked) {
+                savePassword.isEnabled = true
+            }else{
+                savePassword.isChecked = false
+                savePassword.isEnabled = false
+            }
+        }
 
         login.setOnClickListener {
             // Save the inputted username to file
@@ -53,10 +72,20 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "Logged in as $email", Toast.LENGTH_SHORT).show()
 
                         // Save the inputted username to file
-                        preferences
-                            .edit()
-                            .putString("SAVED_USERNAME", username.text.toString())
-                            .apply()
+                        if (saveLogin.isChecked) {
+                            preferences
+                                .edit()
+                                .putString("SAVED_USERNAME", username.text.toString())
+                                .putString("SAVED_PASSWORD", "")
+                                .apply()
+                            if (savePassword.isChecked) {
+                                preferences
+                                    .edit()
+                                    .putString("SAVED_PASSWORD", password.text.toString())
+                                    .apply()
+                            }
+                        }
+
 
                         val intent = Intent(this, MenuActivity::class.java)
                         startActivity(intent)
