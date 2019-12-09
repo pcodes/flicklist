@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:text="@string/username"
+        android:text="@string/username_hint"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp" />
@@ -54,13 +54,14 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/username_hint"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/loginBtn"
-        app:layout_constraintTop_toBottomOf="@+id/signUp" />
+        app:layout_constraintEnd_toEndOf="@+id/password1"
+        app:layout_constraintStart_toStartOf="@+id/password1"
+        app:layout_constraintTop_toBottomOf="@+id/signUp"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/password1"
@@ -72,7 +73,8 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/password0"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/password2"
@@ -84,7 +86,8 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/password2_text"
-        app:layout_constraintTop_toBottomOf="@+id/password1" />
+        app:layout_constraintTop_toBottomOf="@+id/password1"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/signUpBtn"
