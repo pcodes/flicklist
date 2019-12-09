@@ -1,5 +1,7 @@
 package io.patcody.flicklist
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -62,11 +65,23 @@ class MovieAdapter(val movies: List<MovieResult>, val showAddButton: Boolean) : 
         if (!showAddButton) {
             holder.addToListButton.visibility = View.GONE
         }
+        holder.card.setOnClickListener{
+            val intent = Intent(holder.card.context, MovieActivity::class.java)
+            intent.putExtra("MOVIE_ID", movies[position].id)
+            holder.card.context.startActivity(intent)
+        }
     }
 
     class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val moviePoster: ImageView = view.findViewById(R.id.movie_poster)
         val movieTitle: TextView = view.findViewById(R.id.movie_title)
         val addToListButton: Button = view.findViewById(R.id.add_to_list_button)
+        val card = view
+
+       /* init {
+            view.setOnClickListener{
+
+            }
+        }*/
     }
 }
