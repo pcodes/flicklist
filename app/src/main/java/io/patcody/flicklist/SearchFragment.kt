@@ -1,7 +1,6 @@
 package io.patcody.flicklist
 
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -53,12 +52,12 @@ class SearchFragment : Fragment() {
         val userID = firebaseAuth.currentUser?.uid
         val movies = mutableListOf<MovieResult>()
 
-        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView = view.findViewById(R.id.search_recycler_view)
         //val movieAdapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.adapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
+        recyclerView.adapter = MovieAdapter(movies, true)
 
-        val userMovies = mutableListOf<String>()
+        val userMovies = mutableListOf<MovieResult>()
         val reference = firebaseDataBase.getReference("movies/$userID")
 
         reference.addValueEventListener(object : ValueEventListener {
@@ -66,7 +65,7 @@ class SearchFragment : Fragment() {
                 userMovies.clear()
                 Log.wtf("FIREBASE", "Getting movies")
                 dataSnapshot.children.forEach { child ->
-                    val movie = child.getValue(String::class.java)
+                    val movie = child.getValue(MovieResult::class.java)
                     if (movie != null) {
                         userMovies.add(movie)
                     }
@@ -87,11 +86,11 @@ class SearchFragment : Fragment() {
                     val movieResults = movieManager.searchForMovie(searchText.text.toString(), resources.getString(R.string.rapid_api_key))
                     activity!!.runOnUiThread {
                         for (movie in movieResults) {
-                            val isMovieInUserList = userMovies.any {movieItem -> movieItem == movie.id}
+                            val isMovieInUserList = userMovies.any {movieResult -> movieResult.id == movie.id}
                             movies.add(MovieResult(movie.name, movie.id, movie.posterUrl, isMovieInUserList))
                         }
 
-                        recyclerView.adapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
+                        recyclerView.adapter = MovieAdapter(movies, true)
 
                     }
                 } catch (e: Exception) {
