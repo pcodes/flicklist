@@ -11,9 +11,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
 import java.lang.Exception
 
@@ -24,10 +28,9 @@ class SearchFragment : Fragment() {
 
     lateinit var searchText: TextView
     lateinit var searchButton: Button
-    lateinit var responseTextView: TextView
-    lateinit var addMovie: FloatingActionButton
     lateinit var firebaseDataBase: FirebaseDatabase
     lateinit var firebaseAuth: FirebaseAuth
+    lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,27 +46,53 @@ class SearchFragment : Fragment() {
 
         searchText = view.findViewById(R.id.text_search_box)
         searchButton = view.findViewById(R.id.search_button)
-        responseTextView = view.findViewById(R.id.movie_response_text)
-        addMovie = view.findViewById(R.id.addMovie)
+
         firebaseDataBase = FirebaseDatabase.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
         //Get user id and get reference to user db
         val userID = firebaseAuth.currentUser?.uid
         val movies = mutableListOf<MovieResult>()
 
+        recyclerView = view.findViewById(R.id.recycler_view)
+        //val movieAdapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        recyclerView.adapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
+
+        val userMovies = mutableListOf<String>()
+        val reference = firebaseDataBase.getReference("movies/$userID")
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userMovies.clear()
+                Log.wtf("FIREBASE", "Getting movies")
+                dataSnapshot.children.forEach { child ->
+                    val movie = child.getValue(String::class.java)
+                    if (movie != null) {
+                        userMovies.add(movie)
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(this@SearchFragment.context, "Failed to retrieve user movies: $databaseError", Toast.LENGTH_LONG).show()
+            }
+        })
+
         searchButton.setOnClickListener {
             activity.doAsync {
                 val movieManager = MovieManager()
+                movies.clear()
 
                 try {
                     val movieResults = movieManager.searchForMovie(searchText.text.toString(), resources.getString(R.string.rapid_api_key))
                     activity!!.runOnUiThread {
-                        responseTextView.text = ""
-
                         for (movie in movieResults) {
-                            responseTextView.text = responseTextView.text.toString() + movie.name + "\n"
-                            movies.add(MovieResult(movie.name, movie.id, movie.posterUrl))
+                            val isMovieInUserList = userMovies.any {movieItem -> movieItem == movie.id}
+                            movies.add(MovieResult(movie.name, movie.id, movie.posterUrl, isMovieInUserList))
                         }
+
+                        recyclerView.adapter = MovieAdapter(movies, resources.getString(R.string.rapid_api_key))
+
                     }
                 } catch (e: Exception) {
                     Log.wtf("okHTTP ERROR", e.toString())
@@ -74,17 +103,6 @@ class SearchFragment : Fragment() {
 
             }
         }
-
-        addMovie.setOnClickListener {
-            if (movies.isNotEmpty()) {
-                for(movie in movies) {
-                    val movieName = movie.name
-                    val reference = firebaseDataBase.getReference("movies/$userID/$movieName")
-                    reference.setValue(movie)
-                }
-            }
-        }
-
     }
 
     companion object {

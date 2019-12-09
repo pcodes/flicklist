@@ -5,8 +5,9 @@
 
     <string name="search_bar_hint">Search for a Movie</string>
     <string name="search_button_text">Go!</string>
+    <string name="add_to_movie_list">Add</string>
+    <string name="already_in_movie_list">Added!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
