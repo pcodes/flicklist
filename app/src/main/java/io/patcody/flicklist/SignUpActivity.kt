@@ -43,7 +43,6 @@ class SignUpActivity : AppCompatActivity() {
                     .createUserWithEmailAndPassword(inputtedUsername, inputtedPassword)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            //FIXME Add email verification currentUser?.isEmailVerified etc.
                             val currentUser: FirebaseUser? = firebaseAuth.currentUser
                             val email = currentUser?.email
                             Toast.makeText(this, "Registered as $email", Toast.LENGTH_SHORT).show()
