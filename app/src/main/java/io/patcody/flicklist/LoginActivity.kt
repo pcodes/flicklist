@@ -47,6 +47,10 @@ class LoginActivity : AppCompatActivity() {
             login.isEnabled = true
         }
 
+        if(username.text.toString().trim().isNotEmpty()){
+            saveLogin.isChecked = true
+        }
+
         username.addTextChangedListener(textWatcher)
         password.addTextChangedListener(textWatcher)
         saveLogin.setOnClickListener {
