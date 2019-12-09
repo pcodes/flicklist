@@ -51,7 +51,8 @@ class MovieManager {
                 val movie = MovieResult(
                     name = movieTitle,
                     id = id,
-                    posterUrl = poster
+                    posterUrl = poster,
+                    inList = false
                 )
 
                 if (!movieResultsList.any { it.id == movie.id }) {
@@ -61,7 +62,38 @@ class MovieManager {
         }
 
         return movieResultsList
+    }
 
+    fun getMovieData(movieId: String, apiKey: String) : MovieItem? {
+        val searchUrl: String = "https://movie-database-imdb-alternative.p.rapidapi.com/"
+        val searchParams: String = "?i=$movieId"
 
+        val request = Request.Builder()
+            .url(searchUrl + searchParams)
+            .header("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
+            .header("x-rapidapi-key", apiKey)
+            .build()
+
+        val response = okHttpClient.newCall(request).execute()
+        val responseString: String? = response.body?.string()
+
+        if (response.isSuccessful && !responseString.isNullOrEmpty()) {
+            val jsonConversion = JSONObject(responseString)
+            if (!jsonConversion.getBoolean("Response")) {
+                return null
+            }
+
+            val movieTitle = jsonConversion.getString("Title")
+            val year = jsonConversion.getString("Year")
+            val rating = jsonConversion.getString("Rated")
+            val releaseDate = jsonConversion.getString("Released")
+            val director = jsonConversion.getString("Director")
+            val plot = jsonConversion.getString("Plot")
+            val imdbRating = jsonConversion.getString("imdbRating")
+
+            return MovieItem(movieId, movieTitle, year, rating, releaseDate, director, plot, imdbRating)
+        }
+
+        return null
     }
 }
