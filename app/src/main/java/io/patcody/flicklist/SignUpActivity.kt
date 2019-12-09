@@ -1,5 +1,6 @@
 package io.patcody.flicklist
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -50,6 +51,8 @@ class SignUpActivity : AppCompatActivity() {
                             val exception = task.exception
                             Toast.makeText(this, "Registration failed: $exception", Toast.LENGTH_SHORT).show()
                         }
+                        val intent = Intent(this, MenuActivity::class.java)
+                        startActivity(intent)
                     }
             }else{
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
