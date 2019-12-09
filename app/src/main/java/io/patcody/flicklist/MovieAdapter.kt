@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import java.lang.Exception
 
-class MovieAdapter(val movies: List<MovieResult>, val apiKey: String) : RecyclerView.Adapter<MovieAdapter.MoviesViewHolder>() {
+class MovieAdapter(val movies: List<MovieResult>, val showAddButton: Boolean) : RecyclerView.Adapter<MovieAdapter.MoviesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -47,7 +47,7 @@ class MovieAdapter(val movies: List<MovieResult>, val apiKey: String) : Recycler
 
         holder.addToListButton.setOnClickListener {
             try {
-                ref.setValue(movies[position].id)
+                ref.setValue(movies[position])
                 movies[position].inList = true
                 holder.addToListButton.isEnabled = false
             } catch (e: Exception) {
@@ -57,6 +57,10 @@ class MovieAdapter(val movies: List<MovieResult>, val apiKey: String) : Recycler
 
         if (movies[position].inList) {
             holder.addToListButton.isEnabled = false
+        }
+
+        if (!showAddButton) {
+            holder.addToListButton.visibility = View.GONE
         }
     }
 
