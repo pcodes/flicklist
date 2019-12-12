@@ -77,11 +77,5 @@ class MovieAdapter(val movies: List<MovieResult>, val showAddButton: Boolean) : 
         val movieTitle: TextView = view.findViewById(R.id.movie_title)
         val addToListButton: Button = view.findViewById(R.id.add_to_list_button)
         val card = view
-
-       /* init {
-            view.setOnClickListener{
-
-            }
-        }*/
     }
 }

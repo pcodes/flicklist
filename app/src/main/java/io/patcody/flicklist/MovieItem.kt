@@ -10,7 +10,8 @@ data class MovieItem (
     val releaseDate: String,
     val director: String,
     val plot: String,
-    val imdbRating: String
+    val imdbRating: String,
+    val posterURL: String
 ) : Serializable {
-    constructor() : this("", "", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", "", "")
 }
