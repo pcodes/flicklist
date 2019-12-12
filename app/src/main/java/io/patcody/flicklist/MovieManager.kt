@@ -90,8 +90,9 @@ class MovieManager {
             val director = jsonConversion.getString("Director")
             val plot = jsonConversion.getString("Plot")
             val imdbRating = jsonConversion.getString("imdbRating")
+            val posterUrl = jsonConversion.getString("Poster")
 
-            return MovieItem(movieId, movieTitle, year, rating, releaseDate, director, plot, imdbRating)
+            return MovieItem(movieId, movieTitle, year, rating, releaseDate, director, plot, imdbRating, posterUrl)
         }
 
         return null

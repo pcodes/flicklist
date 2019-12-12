@@ -17,5 +17,10 @@
     <string name="save_username">Save Email</string>
     <string name="save_password">Save Password</string>
     <string name="passwordAttributes">At least 6 characters, including numbers</string>
+    
+    <string name="release_date">Released</string>
+    <string name="imdb_score">IMDB Score</string>
+    <string name="director_text">Director</string>
+    <string name="age_rating_text">Age Rating</string>
 
 </resources>
