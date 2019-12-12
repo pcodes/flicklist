@@ -5,9 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
-import org.jetbrains.anko.doAsync
 
 class MenuActivity : AppCompatActivity() {
 
@@ -53,14 +51,5 @@ class MenuActivity : AppCompatActivity() {
         toolbar.title = "Welcome $email"
         val searchFragment = SearchFragment()
         openFragment(searchFragment)
-
-        doAsync {
-            runOnUiThread {
-
-            }
-        }
-
-        
-        
     }
 }

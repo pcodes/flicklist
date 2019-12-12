@@ -77,6 +77,8 @@ class SearchFragment : Fragment() {
             }
         })
 
+        searchButton.text = getString(R.string.search_button_text)
+
         searchButton.setOnClickListener {
             activity.doAsync {
                 val movieManager = MovieManager()
