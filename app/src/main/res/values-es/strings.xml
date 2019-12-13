@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlickList</string>
+    <string name="navigation_search_text">Busca</string>
+    <string name="navigation_list_text">Lista</string>
+    <string name="toolbar_search">Buscar película</string>
+    <string name="toolbar_list">Películas guardadas</string>
+    <string name="welcome_message">Bienvenido %1$s</string>
+
+    <string name="search_bar_hint">Busca una Película</string>
+    <string name="search_button_text">Ir</string>
+    <string name="add_to_movie_list">Agregar</string>
+    <string name="watched_text">Mirada</string>
+    <string name="already_in_movie_list">Se agrega</string>
+
+    <string name="login">Iniciar sesión</string>
+    <string name="username">Email</string>
+    <string name="username_hint">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="save_username">Guardar correo electrónico</string>
+    <string name="save_password">Guardar Contraseña</string>
+    <string name="passwordAttributes">Al menos 6 caracteres, y necesita numeros</string>
+    
+    <string name="release_date">Publicado: %1$s</string>
+    <string name="imdb_score">Puntuación IMDb: %1$s</string>
+    <string name="director_text">Director: %1$s</string>
+    <string name="age_rating_text">Calificación de edad: %1$s</string>
+</resources>

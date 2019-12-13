@@ -15,14 +15,14 @@ class MenuActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
             R.id.navigation_search -> {
-                toolbar.title = "MovieResult Search"
+                toolbar.title = getString(R.string.toolbar_search)
                 val searchFragment = SearchFragment()
                 openFragment(searchFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.navigation_list -> {
-                toolbar.title = "MovieResult List"
+                toolbar.title = getString(R.string.toolbar_list)
                 val listFragment = ListFragment()
                 openFragment(listFragment)
                 return@OnNavigationItemSelectedListener true
@@ -48,7 +48,7 @@ class MenuActivity : AppCompatActivity() {
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavView)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         val email = firebaseAuth.currentUser?.email
-        toolbar.title = "Welcome $email"
+        toolbar.title = getString(R.string.welcome_message, email)
         val searchFragment = SearchFragment()
         openFragment(searchFragment)
     }
