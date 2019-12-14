@@ -79,23 +79,23 @@ class MovieActivity : AppCompatActivity() {
                         Picasso.get().load(movieData.posterURL).into(posterImage)
 
                         movieLabel.text = movieData.movieTitle
-                        movieRelease.text = getString(R.string.release_date) + ": " + movieData.releaseDate
-                        imdbScore.text = getString(R.string.imdb_score) + ": " + movieData.imdbRating
-                        ageRating.text = getString(R.string.age_rating_text) + ": " + movieData.rating
-                        directorName.text = getString(R.string.director_text) + ": " + movieData.director
+                        movieRelease.text = getString(R.string.release_date, movieData.releaseDate)
+                        imdbScore.text = getString(R.string.imdb_score, movieData.imdbRating)
+                        ageRating.text = getString(R.string.age_rating_text, movieData.rating)
+                        directorName.text = getString(R.string.director_text, movieData.director)
                         plotSummary.text = movieData.plot
 
                         //Set up the action button
                         val isAlreadyInUserList = userMovies.any {movieResult -> movieResult.id == movieData.id}
                         val movieRef = firebaseDataBase.getReference("movies/$userID/${movieData.id}")
                         if (isAlreadyInUserList) {
-                            actionButton.text = "Watched!"
+                            actionButton.text = getString(R.string.watched_text)
                             actionButton.setOnClickListener {
                                 movieRef.removeValue()
                                 actionButton.isEnabled = false
                             }
                         } else {
-                            actionButton.text = "Add to list"
+                            actionButton.text = getString(R.string.add_to_movie_list)
                             actionButton.setOnClickListener {
                                 val movieEntry = MovieResult(movieData.movieTitle, movieData.id, movieData.posterURL, false)
                                 movieRef.setValue(movieEntry)
@@ -108,7 +108,7 @@ class MovieActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.wtf("okHTTP ERROR", e.toString())
                 runOnUiThread {
-                    Toast.makeText(this@MovieActivity, "Error making movie API call", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@MovieActivity, "Error making movie API call", Toast.LENGTH_SHORT).show()
                 }
             }
         }
